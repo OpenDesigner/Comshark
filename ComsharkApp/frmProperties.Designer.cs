@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProperties));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.treeViewPropertyGroups = new System.Windows.Forms.TreeView();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -46,7 +46,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            this.splitContainer1.Panel1.Controls.Add(this.treeViewPropertyGroups);
             // 
             // splitContainer1.Panel2
             // 
@@ -55,13 +55,14 @@
             this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 0;
             // 
-            // treeView1
+            // treeViewPropertyGroups
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(215, 452);
-            this.treeView1.TabIndex = 0;
+            this.treeViewPropertyGroups.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewPropertyGroups.Location = new System.Drawing.Point(0, 0);
+            this.treeViewPropertyGroups.Name = "treeViewPropertyGroups";
+            this.treeViewPropertyGroups.Size = new System.Drawing.Size(215, 452);
+            this.treeViewPropertyGroups.TabIndex = 0;
+            this.treeViewPropertyGroups.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewPropertyGroups_AfterSelect);
             // 
             // propertyGrid
             // 
@@ -70,6 +71,7 @@
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(427, 452);
             this.propertyGrid.TabIndex = 0;
+            this.propertyGrid.ToolbarVisible = false;
             // 
             // frmProperties
             // 
@@ -80,6 +82,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmProperties";
             this.Text = "Comshark Properties";
+            this.Load += new System.EventHandler(this.frmProperties_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -91,7 +94,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TreeView treeViewPropertyGroups;
         private System.Windows.Forms.PropertyGrid propertyGrid;
     }
 }

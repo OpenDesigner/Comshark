@@ -12,14 +12,48 @@ namespace Comshark
 {
     public partial class frmComshark : Form
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         DataRepository mDataRepo;
+
+        private delegate void InsertPacketDelegate(ICommPacket packet);
+        //public delegate void OnCommPacketReceived(object sender, CommPacketReceivedEventArgs e);
+        protected void OnCommPacketReceived(object sender, CommPacketReceivedEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new InsertPacketDelegate(mDataRepo.InsertPacket), e.Packet);
+            }
+            else
+            {
+                mDataRepo.InsertPacket(e.Packet);
+            }
+            
+        }
+
+        protected void OnDataRepositoryChange(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView.DataSource = mDataRepo.GetProcessedDataTable().DefaultView;
+                
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
+            }
+            //dataGridView.Update();
+            dataGridView.Refresh();
+        }
 
         public frmComshark()
         {
             mDataRepo = new DataRepository();
             InitializeComponent();
+            CommPort.Instance.CommPacketReceived += OnCommPacketReceived;
+            mDataRepo.DataRepositoryChange += OnDataRepositoryChange;
         }
+
 
         private void frmComshark_Load(object sender, EventArgs e)
         {
@@ -51,7 +85,7 @@ namespace Comshark
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error");
+                log.Error(ex.Message);
             }
         }
 
@@ -65,6 +99,29 @@ namespace Comshark
         {
             CommPort.Instance.Open();
         }
+
+        private void tsbtnProperties_Click(object sender, EventArgs e)
+        {
+            frmProperties prop = new frmProperties();
+            prop.Show();
+        }
+
+        private void tsbtnConnect_Click(object sender, EventArgs e)
+        {
+            CommPort.Instance.Open();
+        }
+
+        private void tsbtnDisconnect_Click(object sender, EventArgs e)
+        {
+            CommPort.Instance.Close();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
 
 
 
