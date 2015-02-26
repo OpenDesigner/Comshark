@@ -120,7 +120,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\nmodbus\nmodbus-read-only\NModbus\src\Modbus\Modbus.csproj">
+    <ProjectReference Include="..\Modbus\Modbus.csproj">
       <Project>{ff96b252-2b24-44a1-a09c-6401b5d7ed23}</Project>
       <Name>Modbus</Name>
     </ProjectReference>

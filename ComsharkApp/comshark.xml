@@ -1,0 +1,19 @@
+<comshark>
+<Props>
+  <Category name="Comshark">
+      <Group name="Interfaces">
+        <Area name="Interface 1" />
+      </Group>
+      <Group name="Capture">
+        <Area name="General"/>
+      </Group>
+  </Category>
+  <Category name="Protocol Decoders">
+    <Groups>
+      <Group name="Modbus">
+        <Area name ="General"/>
+      </Group>
+    </Groups>
+  </Category>
+</Props>
+</comshark>
