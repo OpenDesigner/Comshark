@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comshark", "Comshark.csproj", "{5256244A-D9CF-400F-87C6-A550FF3FBC15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comshark", "ComsharkApp\Comshark.csproj", "{5256244A-D9CF-400F-87C6-A550FF3FBC15}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FF96B252-2B24-44A1-A09C-6401B5D7ED23} = {FF96B252-2B24-44A1-A09C-6401B5D7ED23}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modbus", "..\Modbus\Modbus.csproj", "{FF96B252-2B24-44A1-A09C-6401B5D7ED23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modbus", "Modbus\Modbus.csproj", "{FF96B252-2B24-44A1-A09C-6401B5D7ED23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
