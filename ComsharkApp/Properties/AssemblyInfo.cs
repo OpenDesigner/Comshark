@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Comshark")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The serial communications protocol analyser inspired by Wireshark")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OpenDesigner")]
 [assembly: AssemblyProduct("Comshark")]
 [assembly: AssemblyCopyright("Copyright © OpenDesigner 2015")]
 [assembly: AssemblyTrademark("")]
@@ -36,3 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log.xml", Watch = true)]
+[assembly: NeutralResourcesLanguageAttribute("en")]
