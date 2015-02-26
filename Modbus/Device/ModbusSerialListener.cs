@@ -91,24 +91,31 @@ namespace Modbus.Device
 					{
 						// read request and build message
 						byte[] frame = SerialTransport.ReadRequest(this);
-						IModbusMessage request = ModbusMessageFactory.CreateModbusRequest(this, frame);
+						IModbusMessage message = ModbusMessageFactory.CreateModbusRequest(this, frame);
 
-						if (SerialTransport.CheckFrame && !SerialTransport.ChecksumsMatch(request, frame))
-						{
-							string errorMessage = String.Format(CultureInfo.InvariantCulture, "Checksums failed to match {0} != {1}", request.MessageFrame.Join(", "), frame.Join(", "));
-							_logger.Error(errorMessage);
-							throw new IOException(errorMessage);
-						}
+                        if(message != null)
+                        { 
+                            SerialTransport.CheckFrame = false;
+						    if (SerialTransport.CheckFrame && !SerialTransport.ChecksumsMatch(message, frame))
+						    {
+							    string errorMessage = String.Format(CultureInfo.InvariantCulture, "Checksums failed to match {0} != {1}", message.MessageFrame.Join(", "), frame.Join(", "));
+							    _logger.Error(errorMessage);
+							    throw new IOException(errorMessage);
+						    }
 
-						// listen to all service requests addressed to any slave
-						if (request.SlaveAddress != UnitId)
-						{
-							//_logger.DebugFormat("NModbus Slave {0} ignoring request intended for NModbus Slave {1}", UnitId, request.SlaveAddress);
-						}
-
+						    // listen to all service requests addressed to any slave
+						    if (message.SlaveAddress != UnitId)
+						    {
+							    //_logger.DebugFormat("NModbus Slave {0} ignoring request intended for NModbus Slave {1}", UnitId, request.SlaveAddress);
+						    }
+                        }
 						// perform action
-						IModbusMessage response = ApplyRequest(request);
+						//IModbusMessage response = ApplyRequest(message);
 
+                        ProcessMessage(message);
+
+
+                        
 						// write response
 						//SerialTransport.Write(response);
 					}

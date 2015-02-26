@@ -2,14 +2,18 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Text;
+using log4net;
 
 namespace Modbus.Utility
 {
+    
 	/// <summary>
 	/// Modbus utility methods.
 	/// </summary>
 	public static class ModbusUtility
 	{
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ModbusUtility));
+
 		private static readonly ushort[] crcTable = {
         	0X0000, 0XC0C1, 0XC181, 0X0140, 0XC301, 0X03C0, 0X0280, 0XC241,
         	0XC601, 0X06C0, 0X0780, 0XC741, 0X0500, 0XC5C1, 0XC481, 0X0440,
@@ -112,16 +116,35 @@ namespace Modbus.Utility
 		/// <returns>Array of bytes</returns>
 		public static byte[] HexToBytes(string hex)
 		{
+            byte[] bytes;
+
 			if (hex == null)
 				throw new ArgumentNullException("hex");
 
-			if (hex.Length % 2 != 0)
-				throw new FormatException(Resources.HexCharacterCountNotEven);
+            if (hex.Length % 2 != 0)
+            {
+                _logger.Error("Hex Character Count Not Even");
+                //throw new FormatException(Resources.HexCharacterCountNotEven);
+                bytes = new byte[(hex.Length-1) / 2];
+            }
+            else
+            {
+                bytes = new byte[hex.Length / 2];
+            }
 
-			byte[] bytes = new byte[hex.Length / 2];
 
-			for (int i = 0; i < bytes.Length; i++)
-				bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                try
+                {
+                    bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+                }
+                catch(Exception e)
+                {
+                    _logger.Error("Converting Hex string to Byte failed");
+                }
+            }
 
 			return bytes;
 		}

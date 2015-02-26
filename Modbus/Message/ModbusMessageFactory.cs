@@ -1,12 +1,15 @@
 using System;
 using System.Globalization;
 using Modbus.Device;
+using log4net;
 
 namespace Modbus.Message
 {
 	internal static class ModbusMessageFactory
 	{
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ModbusMessageFactory));
 		private const int MinRequestFrameLength = 3;
+
 
 		public static T CreateModbusMessage<T>(byte[] frame) where T : IModbusMessage, new()
 		{
@@ -59,7 +62,10 @@ namespace Modbus.Message
 						request = CreateModbusMessage<ReadWriteMultipleRegistersRequest>(frame);
 						break;
 					default:
-						throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "Unsupported function code {0}", functionCode), "frame");
+						request = null;
+                        _logger.Debug("Unknown message type");
+                        //throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "Unsupported function code {0}", functionCode), "frame");
+                        break;
 				}
 			}
 

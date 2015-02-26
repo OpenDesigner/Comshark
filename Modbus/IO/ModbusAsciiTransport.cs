@@ -52,12 +52,17 @@ namespace Modbus.IO
 
 		internal byte[] ReadRequestResponse()
 		{
-			// read message frame, removing frame start ':'
-			string frameHex = StreamResourceUtility.ReadLine(StreamResource).Substring(1);
+            // read message frame
+            string frameHex = StreamResourceUtility.ReadLine(StreamResource);
+            //string frameHex = StreamResourceUtility.ReadLine(StreamResource);
 
-			// convert hex to bytes
-			byte[] frame = ModbusUtility.HexToBytes(frameHex);
-			_logger.InfoFormat("RX: {0}", frame.Join(", "));
+            // convert hex to bytes, removing frame start ':'
+            byte[] frame = ModbusUtility.HexToBytes(frameHex.Substring(1)); 
+            _logger.InfoFormat("RX (ASCII-CHAR) length={0}: '{1}'", frameHex.Length-1, frameHex);
+            byte[] frameASCIIbytes = System.Text.Encoding.ASCII.GetBytes(frameHex);
+            _logger.InfoFormat("RX (ASCII-HEX): {0:X}", frameASCIIbytes.Join(" "));
+            _logger.InfoFormat("RX (ASCII-DEC): {0}", frameASCIIbytes.Join(" "));
+			_logger.InfoFormat("RX (Decimal), length={0}: {1}", frame.Length, frame.Join(", "));
 
 			if (frame.Length < 3)
 				throw new IOException("Premature end of stream, message truncated.");

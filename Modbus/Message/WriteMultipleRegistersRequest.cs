@@ -5,11 +5,13 @@ using System.Linq;
 using System.Net;
 using Modbus.Data;
 using Unme.Common;
+using log4net;
 
 namespace Modbus.Message
 {
 	internal class WriteMultipleRegistersRequest : ModbusMessageWithData<RegisterCollection>, IModbusRequest
-	{		
+	{
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(WriteMultipleRegistersRequest));
 		public WriteMultipleRegistersRequest()
 		{
 		}
@@ -83,13 +85,21 @@ namespace Modbus.Message
 
 		protected override void InitializeUnique(byte[] frame)
 		{
-			if (frame.Length < MinimumFrameSize + frame[6])
-				throw new FormatException("Message frame does not contain enough bytes.");
-
-			StartAddress = (ushort) IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 2));
-			NumberOfPoints = (ushort) IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 4));
-			ByteCount = frame[6];
-			Data = new RegisterCollection(frame.Slice(7, ByteCount).ToArray());
+            if (frame.Length < MinimumFrameSize + frame[6])
+            {
+                //throw new FormatException("Message frame does not contain enough bytes.");
+                _logger.Debug("Not enough bytes in frame - must be a response??");
+                StartAddress = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 2));
+                NumberOfPoints = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 4));
+                ByteCount = 0;
+            }
+            else
+            {
+                StartAddress = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 2));
+                NumberOfPoints = (ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(frame, 4));
+                ByteCount = frame[6];
+                Data = new RegisterCollection(frame.Slice(7, ByteCount).ToArray());
+            }
 		}
 	}
 }
