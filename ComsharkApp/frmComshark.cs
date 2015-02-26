@@ -33,9 +33,16 @@ namespace Comshark
 
         protected void OnDataRepositoryChange(object sender, EventArgs e)
         {
+            int row = -1;
+            int sel = -1;
             try
             {
+                //save state of datagridview
+                row = dataGridView.FirstDisplayedScrollingRowIndex;
+                sel = dataGridView.SelectedRows[0].Index;
+
                 dataGridView.DataSource = mDataRepo.GetProcessedDataTable().DefaultView;
+                dataGridView.Rows[0].Selected = false;
                 
             }
             catch (Exception ex)
@@ -44,6 +51,19 @@ namespace Comshark
             }
             //dataGridView.Update();
             dataGridView.Refresh();
+            if (row < dataGridView.Rows.Count && sel < dataGridView.Rows.Count)
+            {
+                if(true) //(Settings.Instance.Follow) 
+                {
+                    dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.Rows.Count - 1;
+                }
+                else
+                {
+                    //if keep current view
+                    dataGridView.FirstDisplayedScrollingRowIndex = row;
+                }
+                dataGridView.Rows[sel].Selected = true;
+            }
         }
 
         public frmComshark()
@@ -58,17 +78,6 @@ namespace Comshark
         private void frmComshark_Load(object sender, EventArgs e)
         {
 
-
-            /*
-            int rowidx = dataGridView.Rows.Add();
-            DataGridViewRow row = dataGridView.Rows[rowidx];
-            row.Cells[0].Value = "2015/02/19 16:27:00.847";
-            row.Cells[1].Value = "Slave";
-            row.Cells[2].Value = "Master";
-            row.Cells[3].Value = "Modbus/ASCII";
-            row.Cells[4].Value = "17";
-            row.Cells[5].Value = "Register Read [3A 33 32 30 33 30 30 30 31 30 30 31 44 41 32 0D 0A]";
-            */
         }
 
         private void btnTest_Click(object sender, EventArgs e)
