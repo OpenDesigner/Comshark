@@ -4,7 +4,7 @@ namespace Modbus
 	/// <summary>
 	///  Defines constants related to the Modbus protocol.
 	/// </summary>
-	internal static class Modbus
+	public static class Modbus
 	{			
 		// supported function codes
 		public const byte ReadCoils = 1;
