@@ -86,10 +86,16 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unme.Common, Version=1.1.0.0, Culture=neutral, PublicKeyToken=da57c01ae4598fdd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Unme\Unme.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommPort.cs" />
+    <Compile Include="ComsharkUtility.cs" />
     <Compile Include="DataRepository.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="frmComshark.cs">
       <SubType>Form</SubType>
     </Compile>

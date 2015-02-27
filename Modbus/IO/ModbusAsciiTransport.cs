@@ -16,7 +16,7 @@ namespace Modbus.IO
 	internal class ModbusAsciiTransport : ModbusSerialTransport
 	{
 		private static readonly ILog _logger = LogManager.GetLogger(typeof(ModbusAsciiTransport));
-
+        
 		internal ModbusAsciiTransport(IStreamResource streamResource)
 			: base(streamResource)
 		{
@@ -32,7 +32,7 @@ namespace Modbus.IO
 			frame.AddRange(ModbusUtility.GetAsciiBytes(ModbusUtility.CalculateLrc(message.MessageFrame)));
 			frame.AddRange(Encoding.ASCII.GetBytes(Modbus.NewLine.ToCharArray()));
 
-			return frame.ToArray();
+            return frame.ToArray();
 		}
 
 		internal override bool ChecksumsMatch(IModbusMessage message, byte[] messageFrame)

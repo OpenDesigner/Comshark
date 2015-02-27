@@ -9,7 +9,9 @@ namespace Comshark
 {
     public interface ICommInterface
     {
-        string ToString();
+        string Name();
+
+        string GetSettingsSummary();
 
         //TODO: Connect() Disconnect(), IsConnected... yadda yadda...
     }

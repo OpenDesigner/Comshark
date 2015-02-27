@@ -3,11 +3,13 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using log4net;
 
 namespace Modbus.Message
 {
 	internal class ReadHoldingInputRegistersRequest : ModbusMessage, IModbusRequest
-	{		
+	{
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ReadHoldingInputRegistersRequest));
 		public ReadHoldingInputRegistersRequest()
 		{
 		}
@@ -38,8 +40,11 @@ namespace Modbus.Message
 			}
 			set
 			{
-				if (value > Modbus.MaximumRegisterRequestResponseSize)
-					throw new ArgumentOutOfRangeException("NumberOfPoints", String.Format(CultureInfo.InvariantCulture, "Maximum amount of data {0} registers.", Modbus.MaximumRegisterRequestResponseSize));
+                if (value > Modbus.MaximumRegisterRequestResponseSize)
+                {
+                    _logger.Debug("NumberOfPoints exceeded maximum register request response size (Not a standard Modbus packet)");
+                    //throw new ArgumentOutOfRangeException("NumberOfPoints", String.Format(CultureInfo.InvariantCulture, "Maximum amount of data {0} registers.", Modbus.MaximumRegisterRequestResponseSize));
+                }
 
 				MessageImpl.NumberOfPoints = value;
 			}

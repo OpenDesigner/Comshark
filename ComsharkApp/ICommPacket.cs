@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 namespace Comshark
 {
@@ -24,6 +25,10 @@ namespace Comshark
         string Info { get; set; }
 
         int Valid { get; set; }
+
+        XElement DetailedInformation { get; set; }
+
+        byte[] Frame { get; set; }
 
     }
 

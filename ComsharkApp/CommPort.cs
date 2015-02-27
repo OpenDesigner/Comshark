@@ -36,9 +36,9 @@ namespace Comshark
         public event EventHandler<CommPacketReceivedEventArgs> CommPacketReceived;
 
         //public delegate void OnModbusListenerPacketReceived(object sender, ModbusSlaveRequestEventArgs e);
-        protected void OnModbusListenerPacketReceived(object sender, ModbusSlaveRequestEventArgs e)
+        protected void OnModbusListenerPacketReceived(object sender, ModbusListenerPacketReceivedEventArgs e)
         {
-            ICommPacket packet = new CommPacketModbus(this, e.Message);
+            ICommPacket packet = new CommPacketModbus(this, e.Frame, e.Message);
             CommPacketReceived(this, new CommPacketReceivedEventArgs(packet));
         }
 
@@ -59,9 +59,14 @@ namespace Comshark
             get { return instance; }
         }
 
-        public override string ToString()
+        public string Name()
         {
             return mSerialPort.PortName; // +"(" + mSerialPort.ToString() + ")";
+        }
+
+        public string GetSettingsSummary()
+        {
+            return String.Format("Data Bits: {0}, Parity: {1}, Stop Bits: {2}", mSerialPort.DataBits.ToString(), mSerialPort.Parity.ToString(), mSerialPort.StopBits.ToString());
         }
 
         public delegate void EventHandler(string param);

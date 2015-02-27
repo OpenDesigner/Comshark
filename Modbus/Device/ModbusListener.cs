@@ -36,8 +36,7 @@ namespace Modbus.Device
 		/// <summary>
 		/// Occurs when a modbus slave receives a request.
 		/// </summary>
-		public event EventHandler<ModbusSlaveRequestEventArgs> ModbusListenerPacketReceived;
-
+        public event EventHandler<ModbusListenerPacketReceivedEventArgs> ModbusListenerPacketReceived;
 
         [SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "Cast is not unneccessary.")]
         internal IModbusMessage ApplyRequest(IModbusMessage message)
@@ -97,14 +96,14 @@ namespace Modbus.Device
                 }
             }
 
-            ModbusListenerPacketReceived.Raise(this, new ModbusSlaveRequestEventArgs(message));
+            //ModbusListenerPacketReceived.Raise(this, new ModbusListenerPacketReceivedEventArgs(message));
 
             return response;
         }
 
-        public void ProcessMessage(IModbusMessage message)
+        public void ProcessMessage(IModbusMessage message, byte[] frame)
         {
-            ModbusListenerPacketReceived.Raise(this, new ModbusSlaveRequestEventArgs(message));
+            ModbusListenerPacketReceived.Raise(this, new ModbusListenerPacketReceivedEventArgs(message, frame));
         }
 	}
 }

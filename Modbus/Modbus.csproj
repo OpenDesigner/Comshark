@@ -97,6 +97,7 @@
     <Compile Include="Device\ModbusSerialSlave.cs" />
     <Compile Include="Device\ModbusListener.cs" />
     <Compile Include="Device\ModbusSlave.cs" />
+    <Compile Include="Device\ModbusListenerPacketReceivedEventArgs.cs" />
     <Compile Include="Device\ModbusSlaveRequestEventArgs.cs" />
     <Compile Include="Device\ModbusTcpSlave.cs" />
     <Compile Include="Device\ModbusUdpSlave.cs" />

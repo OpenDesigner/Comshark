@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.Xml.Linq;
 
 namespace Comshark
 {
@@ -35,7 +36,8 @@ namespace Comshark
             sql = "create table rawdata (data VARCHAR(2048))";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-            sql = "create table processed (Id INT, Time VARCHAR(64), Interface VARCHAR(64), Source VARCHAR(64), Destination VARCHAR(64), Protocol VARCHAR(64), Length INT, Info VARCHAR(512), Valid INT)";
+
+            sql = "create table processed (Id INT, Time VARCHAR(64), Interface VARCHAR(64), Source VARCHAR(64), Destination VARCHAR(64), Protocol VARCHAR(64), Length INT, Info VARCHAR(512), Valid INT, DetailedInfo VARCHAR(1024))";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -81,8 +83,9 @@ namespace Comshark
 
             try
             {
+                log.Debug(String.Format("Detailed Information IN: {0}", packet.DetailedInformation.ToString()));
                 SQLiteCommand command;
-                string sql = String.Format("insert into processed (Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid) values ({0}, '{1}', '{2}', '{3}', '{4}', '{5}', {6}, '{7}', {8})", mPacketNumber++, packet.Timestamp.ToString(), packet.Interface.ToString(), packet.Source, packet.Destination, packet.Protocol, packet.Length, packet.Info, packet.Valid);
+                string sql = String.Format("insert into processed (Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid, DetailedInfo) values ({0}, '{1}', '{2}', '{3}', '{4}', '{5}', {6}, '{7}', {8}, '{9}')", mPacketNumber++, packet.Timestamp.ToString(), packet.Interface.Name(), packet.Source, packet.Destination, packet.Protocol, packet.Length, packet.Info, packet.Valid, packet.DetailedInformation.ToString());
                 command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -91,8 +94,41 @@ namespace Comshark
                 log.Error(ex.Message);
             }
 
+
+
             DataRepositoryChange(this, new EventArgs());
         }
 
+        public XElement GetDetailedInformation(int id)
+        {
+            SQLiteCommand command;
+            string sql;
+
+            sql = String.Format("select DetailedInfo from processed where Id={0}", id);
+            command = new SQLiteCommand(sql, m_dbConnection);
+            //SQLiteDataAdapter da = new SQLiteDataAdapter(command);
+            //DataSet ds = new DataSet();
+            //ds[0] 
+            SQLiteDataReader reader = command.ExecuteReader();
+            try
+            {
+                if (reader.Read())
+                {
+                    String str = reader[0].ToString();
+                    log.Debug(String.Format("Detailed Information OUT: {0}", str));
+                    return XElement.Parse(str);
+                }
+                else
+                    return null;
+            }
+            catch(Exception e)
+            {
+                log.Error(e.Message);
+
+            }
+
+            return null;
+
+        }
     }
 }

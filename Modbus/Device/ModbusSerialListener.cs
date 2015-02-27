@@ -103,16 +103,11 @@ namespace Modbus.Device
 							    throw new IOException(errorMessage);
 						    }
 
-						    // listen to all service requests addressed to any slave
-						    if (message.SlaveAddress != UnitId)
-						    {
-							    //_logger.DebugFormat("NModbus Slave {0} ignoring request intended for NModbus Slave {1}", UnitId, request.SlaveAddress);
-						    }
                         }
 						// perform action
 						//IModbusMessage response = ApplyRequest(message);
 
-                        ProcessMessage(message);
+                        ProcessMessage(message, frame);
 
 
                         
