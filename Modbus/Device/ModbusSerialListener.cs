@@ -5,6 +5,7 @@ using System.IO.Ports;
 using log4net;
 using Modbus.IO;
 using Modbus.Message;
+using Modbus.Utility;
 using Unme.Common;
 
 namespace Modbus.Device
@@ -92,22 +93,37 @@ namespace Modbus.Device
 						// read request and build message
 						byte[] frame = SerialTransport.ReadRequest(this);
 						IModbusMessage message = ModbusMessageFactory.CreateModbusRequest(this, frame);
+                        ModbusMessageMetadata metadata = new ModbusMessageMetadata();
 
                         if(message != null)
-                        { 
-                            SerialTransport.CheckFrame = false;
-						    if (SerialTransport.CheckFrame && !SerialTransport.ChecksumsMatch(message, frame))
-						    {
+                        {
+
+                            metadata.CalculatedRedundancyCheck = ModbusUtility.CalculateLrc(message.MessageFrame);
+                            metadata.FrameRedundancyCheck = frame[frame.Length - 1];
+
+                            //SerialTransport.CheckFrame = false;
+						    if (SerialTransport.CheckFrame)
+                            {
+                                if(!SerialTransport.ChecksumsMatch(message, frame))
+						        {
 							    string errorMessage = String.Format(CultureInfo.InvariantCulture, "Checksums failed to match {0} != {1}", message.MessageFrame.Join(", "), frame.Join(", "));
 							    _logger.Error(errorMessage);
-							    throw new IOException(errorMessage);
+                                //TODO if settings ignore lrc errors skip the following
+							    //throw new IOException(errorMessage);
+                                    metadata.FailedFrameCheck = true;
+                                }
+                                else
+                                {
+                                    metadata.PassedFrameCheck = true;
+                                }
 						    }
+
 
                         }
 						// perform action
 						//IModbusMessage response = ApplyRequest(message);
 
-                        ProcessMessage(message, frame);
+                        ProcessMessage(message, frame, metadata);
 
 
                         

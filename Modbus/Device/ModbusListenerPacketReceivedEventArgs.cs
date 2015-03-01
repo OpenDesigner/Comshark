@@ -10,11 +10,13 @@ namespace Modbus.Device
 	{
 		private readonly IModbusMessage mMessage;
         private readonly byte[] mFrame;
+        private readonly ModbusMessageMetadata mMetadata;
 
-        internal ModbusListenerPacketReceivedEventArgs(IModbusMessage message, byte[] frame)
+        internal ModbusListenerPacketReceivedEventArgs(IModbusMessage message, byte[] frame, ModbusMessageMetadata metadata)
 		{
 			mMessage = message;
             mFrame = frame;
+            mMetadata = metadata;
 		}
 
 		/// <summary>
@@ -29,6 +31,11 @@ namespace Modbus.Device
         public byte[] Frame
         {
             get { return mFrame; }
+        }
+
+        public ModbusMessageMetadata Metadata
+        {
+            get { return mMetadata;  }
         }
 	}
 }

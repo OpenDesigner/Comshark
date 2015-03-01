@@ -121,6 +121,7 @@
     <Compile Include="IO\TcpClientAdapter.cs" />
     <Compile Include="IO\UdpClientAdapter.cs" />
     <Compile Include="Message\IModbusRequest.cs" />
+    <Compile Include="Message\ModbusMessageMetadata.cs" />
     <Compile Include="Message\ReadCoilsInputsRequest.cs" />
     <Compile Include="Message\ReadHoldingInputRegistersRequest.cs" />
     <Compile Include="Message\ReadWriteMultipleRegistersRequest.cs" />

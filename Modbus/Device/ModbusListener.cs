@@ -101,9 +101,9 @@ namespace Modbus.Device
             return response;
         }
 
-        public void ProcessMessage(IModbusMessage message, byte[] frame)
+        public void ProcessMessage(IModbusMessage message, byte[] frame, ModbusMessageMetadata metadata)
         {
-            ModbusListenerPacketReceived.Raise(this, new ModbusListenerPacketReceivedEventArgs(message, frame));
+            ModbusListenerPacketReceived.Raise(this, new ModbusListenerPacketReceivedEventArgs(message, frame, metadata));
         }
 	}
 }

@@ -90,6 +90,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Unme\Unme.Common.dll</HintPath>
     </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\packages\DockPanelSuite.2.9.0.0\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommPort.cs" />
@@ -102,6 +105,24 @@
     <Compile Include="frmComshark.Designer.cs">
       <DependentUpon>frmComshark.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPacketBytes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPacketBytes.Designer.cs">
+      <DependentUpon>frmPacketBytes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPacketDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPacketDetails.Designer.cs">
+      <DependentUpon>frmPacketDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPacketList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPacketList.Designer.cs">
+      <DependentUpon>frmPacketList.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,12 +132,20 @@
     <Compile Include="CommPacketModbus.cs" />
     <Compile Include="ICommInterface.cs" />
     <Compile Include="ICommPacket.cs" />
-    <Compile Include="PacketReceivedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="frmComshark.resx">
       <DependentUpon>frmComshark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPacketBytes.resx">
+      <DependentUpon>frmPacketBytes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPacketDetails.resx">
+      <DependentUpon>frmPacketDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPacketList.resx">
+      <DependentUpon>frmPacketList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmProperties.resx">
       <DependentUpon>frmProperties.cs</DependentUpon>
@@ -145,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="comshark_icon.ico" />
+    <Content Include="license.txt" />
     <Content Include="RuntimeConfiguration\comshark.xml" />
     <Content Include="RuntimeConfiguration\log.xml" />
   </ItemGroup>

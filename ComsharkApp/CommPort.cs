@@ -38,7 +38,7 @@ namespace Comshark
         //public delegate void OnModbusListenerPacketReceived(object sender, ModbusSlaveRequestEventArgs e);
         protected void OnModbusListenerPacketReceived(object sender, ModbusListenerPacketReceivedEventArgs e)
         {
-            ICommPacket packet = new CommPacketModbus(this, e.Frame, e.Message);
+            ICommPacket packet = new CommPacketModbus(this, e.Frame, e.Message, e.Metadata);
             CommPacketReceived(this, new CommPacketReceivedEventArgs(packet));
         }
 
@@ -54,19 +54,39 @@ namespace Comshark
 
         }
 
+        public SerialPort SerialPort
+        {
+            get
+            {
+                return mSerialPort;
+            }
+        }
+
         public static CommPort Instance
         {
             get { return instance; }
         }
 
-        public string Name()
+        public override string ToString()
         {
-            return mSerialPort.PortName; // +"(" + mSerialPort.ToString() + ")";
+            return base.ToString();
         }
 
-        public string GetSettingsSummary()
+        public string Name
         {
-            return String.Format("Data Bits: {0}, Parity: {1}, Stop Bits: {2}", mSerialPort.DataBits.ToString(), mSerialPort.Parity.ToString(), mSerialPort.StopBits.ToString());
+            get
+            {
+                return mSerialPort.PortName; // +"(" + mSerialPort.ToString() + ")";
+            }
+        }
+
+        public string Info
+        {
+            get
+            {
+                return String.Format("Baud Rate: {0}, Data Bits: {1}, Parity: {2}, Stop Bits: {3}", mSerialPort.BaudRate.ToString(), mSerialPort.DataBits.ToString(), mSerialPort.Parity.ToString(), mSerialPort.StopBits.ToString());
+            }
+
         }
 
         public delegate void EventHandler(string param);
