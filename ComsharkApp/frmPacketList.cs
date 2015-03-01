@@ -14,6 +14,10 @@ namespace Comshark
 {
     public partial class frmPacketList : DockContent
     {
+        private bool mAutoFollow = true;
+        private bool mAutoSelectLatest = false;
+        private bool mKeepSelectedInView = false;
+
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public event EventHandler<PacketSelectionEventArgs> PacketSelectionEvent;
@@ -35,32 +39,53 @@ namespace Comshark
             log.Debug("OnDataRepositoryChange");
             try
             {
-                //save state of datagridview
-                row = dataGridView.FirstDisplayedScrollingRowIndex;
-                if(dataGridView.SelectedRows.Count > 0)
+                //save state of datagridview, visible row and selected row
+                if (dataGridView.SelectedRows.Count > 0)
+                {
+                    row = dataGridView.FirstDisplayedScrollingRowIndex;
                     sel = dataGridView.SelectedRows[0].Index;
+                }
 
                 dataGridView.SuspendLayout();
                 dataGridView.DataSource = dataview;
-                //if(dataGridView.Rows.Count > 0)
-                //    dataGridView.Rows[0].Selected = false;
+                if(dataGridView.Rows.Count > 0)
+                    dataGridView.Rows[0].Selected = false;
 
                 //dataGridView.Update();
                 //dataGridView.Refresh();
-                
-                if (row < dataGridView.Rows.Count && sel < dataGridView.Rows.Count)
+
+                if (mAutoSelectLatest)
                 {
-                    if (true) //(Settings.Instance.Follow) 
+                    sel = dataGridView.Rows.Count - 2;
+                    dataGridView.Rows[sel].Selected = true;
+                }
+                else
+                {
+                    if (sel >= 0 && dataGridView.Rows.Count > 0)
+                        dataGridView.Rows[sel].Selected = true;
+                }
+
+
+                if (dataGridView.Rows.Count > 0)
+                {
+                    if (KeepSelectedInView)
                     {
-                        dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.Rows.Count - 1;
+                        if(sel >= 0)
+                            dataGridView.FirstDisplayedScrollingRowIndex = sel;
                     }
                     else
                     {
-                        //if keep current view
-                        dataGridView.FirstDisplayedScrollingRowIndex = row;
+                        if (mAutoFollow)
+                        {
+                            dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.Rows.Count - 1;
+                        }
+                        else
+                        {
+                            //if keep current view
+                            if (row < dataGridView.Rows.Count)
+                                dataGridView.FirstDisplayedScrollingRowIndex = row;
+                        }
                     }
-                    if(sel >= 0 && dataGridView.SelectedRows.Count > 0)
-                        dataGridView.Rows[sel].Selected = true;
                 }
             }
             catch (Exception ex)
@@ -88,6 +113,45 @@ namespace Comshark
         {
             PacketSelectionEvent.Raise(this, new PacketSelectionEventArgs(SelectedIndex));
         }
+
+        public bool AutoFollow
+        {
+            get
+            {
+                return mAutoFollow;
+            }
+
+            set
+            {
+                mAutoFollow = value;
+            }
+        }
+
+        public bool AutoSelectLatest
+        {
+            get
+            {
+                return mAutoSelectLatest;
+            }
+
+            set
+            {
+                mAutoSelectLatest = value;
+            }
+        }
+
+        public bool KeepSelectedInView
+        {
+            get
+            {
+                return mKeepSelectedInView;
+            }
+
+            set
+            {
+                mKeepSelectedInView = value;
+            }
+        }
     }
 
 
@@ -110,4 +174,6 @@ namespace Comshark
             get { return mFrameId; }
         }
     }
+   
 }
+

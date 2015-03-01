@@ -133,5 +133,20 @@ namespace Comshark
             }
         }
 
+        private void menuItemToggleAutoScroll_Click(object sender, EventArgs e)
+        {
+            mFormPacketList.AutoFollow = menuItemToggleAutoScroll.Checked;
+        }
+
+        private void menuItemToggleKeepSelectedInView_Click(object sender, EventArgs e)
+        {
+            mFormPacketList.KeepSelectedInView = menuItemToggleKeepSelectedInView.Checked;
+        }
+
+        private void menuItemToggleAutoSelectLatest_Click(object sender, EventArgs e)
+        {
+            mFormPacketList.AutoSelectLatest = menuItemToggleAutoSelectLatest.Checked;
+        }
+
     }
 }
