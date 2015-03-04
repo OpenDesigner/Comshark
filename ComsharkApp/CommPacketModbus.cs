@@ -10,6 +10,7 @@ using Modbus.Message;
 using System.Xml.Linq;
 using Modbus.Utility;
 using Unme.Common;
+using System.Drawing;
 
 
 namespace Comshark
@@ -30,6 +31,8 @@ namespace Comshark
         XElement mDetailedInformation;
         byte[] mFrame;
         ModbusMessageMetadata mMetadata;
+        Color mTextColour;
+        Color mBackgroundColour;
         
         
         public CommPacketModbus(ICommInterface iface, byte[] frame, IModbusMessage message, ModbusMessageMetadata metadata)
@@ -40,6 +43,12 @@ namespace Comshark
             mInterface = iface;
             mFrame = frame;
             mMetadata = metadata;
+            mTextColour = Color.Empty;
+            mBackgroundColour = Color.Empty;
+            mValid = (mMetadata.CheckedFrame && mMetadata.PassedFrameCheck) ? 1 : 0;
+
+
+
 
             if (message != null)
             {
@@ -53,39 +62,148 @@ namespace Comshark
 
                 switch (mMessage.FunctionCode)
                 {
-
                     case Modbus.Modbus.ReadCoils:
                         mFunctionCodeString = "[ReadCoils]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.LightGreen;
+                            mBackgroundColour = Color.DarkGray;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = ColorTranslator.FromHtml("#E4FFC7");
+                        }
                         break;
                     case Modbus.Modbus.ReadInputs:
                         mFunctionCodeString = "[ReadInputs]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.LightGreen;
+                            mBackgroundColour = Color.DarkGray;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = ColorTranslator.FromHtml("#E4FFC7");
+                        }
                         break;
                     case Modbus.Modbus.ReadHoldingRegisters:
                         mFunctionCodeString = "[ReadHoldingRegisters]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.LightGreen;
+                            mBackgroundColour = Color.DarkGray;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = ColorTranslator.FromHtml("#E4FFC7");
+                        }
                         break;
                     case Modbus.Modbus.ReadInputRegisters:
                         mFunctionCodeString = "[ReadInputRegisters]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.LightGreen;
+                            mBackgroundColour = Color.DarkGray;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = ColorTranslator.FromHtml("#E4FFC7");
+                        }
                         break;
                     case Modbus.Modbus.Diagnostics:
                         mFunctionCodeString = "[Diagnostics]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightPink;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSalmon;
+                        }
                         break;
                     case Modbus.Modbus.WriteSingleCoil:
                         mFunctionCodeString = "[WriteSingleCoil]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSkyBlue;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSteelBlue;
+                        }
                         break;
                     case Modbus.Modbus.WriteSingleRegister:
                         mFunctionCodeString = "[WriteSingleRegister]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSkyBlue;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSteelBlue;
+                        }
                         break;
                     case Modbus.Modbus.WriteMultipleCoils:
                         mFunctionCodeString = "[WriteMultipleCoils]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSkyBlue;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSteelBlue;
+                        }
                         break;
                     case Modbus.Modbus.WriteMultipleRegisters:
                         mFunctionCodeString = "[WriteMultipleRegisters]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSkyBlue;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightSteelBlue;
+                        }
                         break;
                     case Modbus.Modbus.ReadWriteMultipleRegisters:
                         mFunctionCodeString = "[ReadWriteMultipleRegisters]";
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightGreen;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.Black;
+                            mBackgroundColour = Color.LightCyan;
+                        }
                         break;
                     default:
                         mFunctionCodeString = String.Format("[Unknown function code {0}]", message.FunctionCode);
+                        if (mMetadata.Response)
+                        {
+                            mTextColour = Color.LightYellow;
+                            mBackgroundColour = Color.Gray;
+                        }
+                        else if (mMetadata.Request)
+                        {
+                            mTextColour = Color.LightYellow;
+                            mBackgroundColour = Color.DimGray;
+                        }
                         break;
                 }
 
@@ -104,6 +222,24 @@ namespace Comshark
                 mFunctionCodeString = "Unsupported function type";
                 mInfo = mFunctionCodeString;
 
+            }
+
+
+
+            if (mMetadata.CheckedFrame && mMetadata.FailedFrameCheck)
+            {
+                mTextColour = Color.White;
+                mBackgroundColour = Color.Red;
+            }
+            else if (!mMetadata.CheckedFrame)
+            {
+                mTextColour = Color.Black;
+                mBackgroundColour = Color.Yellow;
+            }
+            else
+            {
+                //mTextColour = Color.White;
+                //mBackgroundColour = Color.Green;
             }
 
             CompileDetailedInformation();
@@ -314,6 +450,32 @@ namespace Comshark
             set
             {
                 mFrame = value;
+            }
+        }
+
+        public Color TextColour
+        { 
+            get
+            {
+                return mTextColour;
+            }
+            
+            set
+            {
+                
+            }
+        }
+
+        public Color BackgroundColour
+        {
+            get
+            {
+                return mBackgroundColour;
+            }
+
+            set
+            {
+
             }
         }
 

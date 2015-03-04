@@ -46,7 +46,10 @@ namespace Comshark
         private void frmComshark_Load(object sender, EventArgs e)
         {
 
-
+            menuItemToggleColourise.Checked = mFormPacketList.Colourise;
+            menuItemToggleAutoScroll.Checked = mFormPacketList.AutoFollow;
+            menuItemToggleAutoSelectLatest.Checked = mFormPacketList.AutoSelectLatest;
+            menuItemToggleKeepSelectedInView.Checked = mFormPacketList.KeepSelectedInView;
         }
 
         protected void OnCommPacketReceived(object sender, CommPacketReceivedEventArgs e)
@@ -146,6 +149,11 @@ namespace Comshark
         private void menuItemToggleAutoSelectLatest_Click(object sender, EventArgs e)
         {
             mFormPacketList.AutoSelectLatest = menuItemToggleAutoSelectLatest.Checked;
+        }
+
+        private void menuItemToggleColourise_Click(object sender, EventArgs e)
+        {
+            mFormPacketList.Colourise = menuItemToggleColourise.Checked;
         }
 
     }

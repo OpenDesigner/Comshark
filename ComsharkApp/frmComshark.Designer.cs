@@ -83,7 +83,7 @@
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.timeDisplayFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iSOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.colourisePacketListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemToggleColourise = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemToggleAutoScroll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemToggleAutoSelectLatest = new System.Windows.Forms.ToolStripMenuItem();
@@ -433,7 +433,7 @@
             this.packetBytesToolStripMenuItem,
             this.toolStripMenuItem7,
             this.timeDisplayFormatToolStripMenuItem,
-            this.colourisePacketListToolStripMenuItem,
+            this.menuItemToggleColourise,
             this.toolStripSeparator5,
             this.menuItemToggleAutoScroll,
             this.menuItemToggleAutoSelectLatest,
@@ -516,14 +516,15 @@
             this.iSOToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.iSOToolStripMenuItem.Text = "ISO";
             // 
-            // colourisePacketListToolStripMenuItem
+            // menuItemToggleColourise
             // 
-            this.colourisePacketListToolStripMenuItem.Checked = true;
-            this.colourisePacketListToolStripMenuItem.CheckOnClick = true;
-            this.colourisePacketListToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.colourisePacketListToolStripMenuItem.Name = "colourisePacketListToolStripMenuItem";
-            this.colourisePacketListToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.colourisePacketListToolStripMenuItem.Text = "Colourise Packet List";
+            this.menuItemToggleColourise.Checked = true;
+            this.menuItemToggleColourise.CheckOnClick = true;
+            this.menuItemToggleColourise.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuItemToggleColourise.Name = "menuItemToggleColourise";
+            this.menuItemToggleColourise.Size = new System.Drawing.Size(188, 22);
+            this.menuItemToggleColourise.Text = "Colourise Packet List";
+            this.menuItemToggleColourise.Click += new System.EventHandler(this.menuItemToggleColourise_Click);
             // 
             // toolStripSeparator5
             // 
@@ -953,7 +954,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem timeDisplayFormatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iSOToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem colourisePacketListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemToggleColourise;
         private System.Windows.Forms.ToolStripMenuItem menuItemToggleAutoScroll;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;

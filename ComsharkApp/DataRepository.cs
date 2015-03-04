@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Xml.Linq;
+using System.Drawing;
 
 namespace Comshark
 {
@@ -37,7 +38,7 @@ namespace Comshark
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
-            sql = "create table processed (Id INT, Time VARCHAR(64), Interface VARCHAR(64), Source VARCHAR(64), Destination VARCHAR(64), Protocol VARCHAR(64), Length INT, Info VARCHAR(512), Valid INT, DetailedInfo VARCHAR(1024))";
+            sql = "create table processed (Id INT, Time VARCHAR(64), Interface VARCHAR(64), Source VARCHAR(64), Destination VARCHAR(64), Protocol VARCHAR(64), Length INT, Info VARCHAR(512), Valid INT, DetailedInfo VARCHAR(1024), TextColour VARCHAR(12), BackgroundColour VARCHAR(12))";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
@@ -50,7 +51,7 @@ namespace Comshark
             string sql;
             DataTable dt;
 
-            sql = "select Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid from processed";
+            sql = "select Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid, TextColour, BackgroundColour from processed";
             command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataAdapter da = new SQLiteDataAdapter(command);
             DataSet ds = new DataSet();
@@ -73,7 +74,7 @@ namespace Comshark
             {
                 //log.Debug(String.Format("Detailed Information IN: {0}", packet.DetailedInformation.ToString()));
                 SQLiteCommand command;
-                string sql = String.Format("insert into processed (Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid, DetailedInfo) values ({0}, '{1}', '{2}', '{3}', '{4}', '{5}', {6}, '{7}', {8}, '{9}')", mPacketNumber++, packet.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff"), packet.Interface.Name, packet.Source, packet.Destination, packet.Protocol, packet.Length, packet.Info, packet.Valid, packet.DetailedInformation.ToString());
+                string sql = String.Format("insert into processed (Id, Time, Interface, Source, Destination, Protocol, Length, Info, Valid, DetailedInfo, TextColour, BackgroundColour) values ({0}, '{1}', '{2}', '{3}', '{4}', '{5}', {6}, '{7}', {8}, '{9}', '{10}', '{11}')", mPacketNumber++, packet.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff"), packet.Interface.Name, packet.Source, packet.Destination, packet.Protocol, packet.Length, packet.Info, packet.Valid, packet.DetailedInformation.ToString(), ColorTranslator.ToHtml(packet.TextColour), ColorTranslator.ToHtml(packet.BackgroundColour));
                 command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
                 DataRepositoryChange(this, new EventArgs());
