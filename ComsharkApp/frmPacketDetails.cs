@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
 
 namespace Comshark
 {
@@ -19,11 +20,29 @@ namespace Comshark
         public frmPacketDetails()
         {
             InitializeComponent();
+            treeView.DoubleBuffered(true);
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
+        }
+
+        
+        internal static class NativeWindowAPI
+        {
+           internal static readonly int GWL_EXSTYLE = -20;
+           internal static readonly int WS_EX_COMPOSITE = 0x02000000;
+
+           [DllImport("user32")]
+           internal static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+           [DllImport("user32")]
+           internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
         }
 
         private void frmPacketDetails_Load(object sender, EventArgs e)
         {
-            treeView.DoubleBuffered(true);
+            /* Fix for treeview flickering */
+            int style = NativeWindowAPI.GetWindowLong(this.Handle, NativeWindowAPI.GWL_EXSTYLE);
+            style |= NativeWindowAPI.WS_EX_COMPOSITE;
+            NativeWindowAPI.SetWindowLong(this.Handle, NativeWindowAPI.GWL_EXSTYLE, style);
         }
 
         public void UpdateDetails(int frameId, XElement xmlDetails)
@@ -34,13 +53,15 @@ namespace Comshark
 
             try
             {
+                treeView.SuspendLayout();
                 treeView.BeginUpdate();
+
                 treeView.Nodes.Clear();
 
                 if (frameId < 0)
                 {
                     treeView.Nodes.Add(new TreeNode("No Packet Selected!"));
-                    return;
+                    throw new Exception("No Packet Selected");
                 }
 
                 treeView.Nodes.Add(new TreeNode("Detailed Packet Information"));
@@ -63,6 +84,7 @@ namespace Comshark
             finally
             {
                 treeView.EndUpdate();
+                treeView.ResumeLayout();
                 //log.Debug("UpdateDetailedView - Done.");
             }
 
@@ -114,5 +136,23 @@ namespace Comshark
                 log.Error(e.Message);
             }
         }
+
+
+        /*
+         * protected override void OnPaint(PaintEventArgs e)
+{
+    if (GetStyle(ControlStyles.UserPaint))
+    {
+        Message m = new Message();
+        m.HWnd = Handle;
+        m.Msg = WM_PRINTCLIENT;
+        m.WParam = e.Graphics.GetHdc();
+        m.LParam = (IntPtr)PRF_CLIENT;
+        DefWndProc(ref m);
+        e.Graphics.ReleaseHdc(m.WParam);
+    }
+    base.OnPaint(e);
+}
+         */
     }
 }

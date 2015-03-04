@@ -35,7 +35,7 @@
             // 
             this.treeView.BackColor = System.Drawing.Color.White;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Font = new System.Drawing.Font("Monospac821 BT", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.treeView.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeView.ForeColor = System.Drawing.Color.Black;
             this.treeView.FullRowSelect = true;
             this.treeView.HideSelection = false;
@@ -52,6 +52,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1228, 329);
             this.Controls.Add(this.treeView);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmPacketDetails";
             this.Text = "Packet Details";
             this.Load += new System.EventHandler(this.frmPacketDetails_Load);

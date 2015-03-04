@@ -101,6 +101,36 @@ namespace Modbus.Device
                             metadata.CalculatedRedundancyCheck = ModbusUtility.CalculateLrc(message.MessageFrame);
                             metadata.FrameRedundancyCheck = frame[frame.Length - 1];
 
+                            
+
+                            if ((frame.Length >= 4) && ((frame.Length - 4) == Convert.ToInt16(frame[2])))
+                            {
+                                _logger.Debug("Detected a response frame.");
+                                metadata.Response = true;
+                            }
+                            else if (frame.Length == 7)
+                            {
+                                _logger.Debug("Detected a request frame (no data)");
+                                metadata.Request = true;
+                            }
+                            else if ((frame.Length >= 7) && ((frame.Length - 7) == (Convert.ToInt16(frame[6])))) 
+                            {
+                                _logger.Debug("Detected a request frame (with data)");
+                                metadata.Request = true;
+                            }
+                            else if(frame.Length == 3)
+                            {
+                                _logger.Debug("Detected a request frame (with no additional information)");
+                                metadata.Request = true;
+                            }
+                            else
+                            {
+                                _logger.Debug("Detected undecided (request or response??)");
+                                _logger.DebugFormat("Response data length: actual: {0} vs sent: {1}", (frame.Length - 4), Convert.ToInt16(frame[2]));
+                            }
+
+
+
                             //SerialTransport.CheckFrame = false;
 						    if (SerialTransport.CheckFrame)
                             {

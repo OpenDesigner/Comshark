@@ -89,7 +89,13 @@ namespace Comshark
                         break;
                 }
 
-                mInfo = mFunctionCodeString + " - " + mMessage.ToString();
+                if (mMetadata.Request == true && mMetadata.Response == false)
+                    mInfo = "Request:  " + mFunctionCodeString + " - " + mMessage.ToString();
+                else if (mMetadata.Request == false && mMetadata.Response == true)
+                    mInfo = "Response: " + mFunctionCodeString;
+                else
+                    mInfo = mFunctionCodeString;
+
             }
             else
             {
@@ -156,6 +162,7 @@ namespace Comshark
                                     new XElement("data_ascii_hex", new XAttribute("content", "Data ASCII (hex): " + BitConverter.ToString(asciiBytes).Replace("-", " "))),
                                     new XElement("data_ascii_hex", new XAttribute("content", "Decoded Data (dec): " + mFrame.Join(" "))),
                                     new XElement("data_ascii_hex", new XAttribute("content", "Decoded Data (hex): " + BitConverter.ToString(mFrame).Replace("-", " "))),
+                                    /*new XElement("data_ascii_hex", new XAttribute("content", "Data: " + mMessage.ProtocolDataUnit.Join(", "))),*/
                                     new XElement("lrc", new XAttribute("content", "Redundancy Check: 0x" +  mMetadata.FrameRedundancyCheck.ToString("X2") + " " + checkStr),
                                         new XElement("lrc_failed", new XAttribute("content", "[Type: LRC]")),
                                         new XElement("lrc_calculated", new XAttribute("content", "Frame: 0x" + mMetadata.FrameRedundancyCheck.ToString("X2"))),
@@ -171,6 +178,8 @@ namespace Comshark
                                     new XElement("transaction_id", new XAttribute("content", "[Transaction Id: " + mMessage.TransactionId.ToString() + "]"))
                                     ),
                                 new XElement("payload_parent", new XAttribute("content", "Data Payload:"), new XAttribute("expand", "true"),
+                                    new XElement("data_ascii_char", new XAttribute("content", "Request: " + (mMetadata.Request ? "True" : "False"))),
+                                    new XElement("data_ascii_char", new XAttribute("content", "Response: " + (mMetadata.Response ? "True" : "False"))),
                                     new XElement("info", new XAttribute("content", "[Info: " + mMessage.ToString() + "]"))
                                     //If request
                                     //new XElement("register_address", new XAttribute("content", "Register Address: " + mMetadata.RegisterAddress.ToString())),
